@@ -15,7 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-//@Setter
+@Setter
 @ToString
 public class Employee {
 	
