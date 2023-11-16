@@ -38,9 +38,37 @@ public class EmployeeController {
 		return emp;
 	}
 	
-	//getEmployeeByName(name)
+	//Get employee by name
+	@GetMapping("/employee/byFirstName/{firstName}")
+	Employee getEmployeeByFirstName(@PathVariable("firstName") String firstName) {
+		// Call service method to find employee by firstName
+		Employee emp = empService.getEmployeeByFirstName(firstName);
+		
+		// return response
+		return emp;
+	}
+	
+	// search emp by contact no
+	@GetMapping("/employee/byContactNo/{cNo}")
+	Employee getEmployeeByContactNo(@PathVariable("cNo") String contactNo) {
+		// Call service method to get emp based on contact no
+		Employee emp = empService.getEmployeeByContactNo(contactNo);
+		
+		// return response
+		return emp;
+	}
 	
 	
+	// Search employee based on last name
+	
+	@PostMapping("/employee/byLastName")
+	Employee getEmployeeByLastName(@RequestBody String lastName) {
+		System.out.println(lastName);
+		// call service method to find employee based last name
+		Employee emp = empService.getEmployeeByLastName(lastName);
+		// return response
+		return emp;
+	}
 	
 	// insert employee in the db
 	@PostMapping("/employee/add")

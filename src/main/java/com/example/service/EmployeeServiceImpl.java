@@ -96,4 +96,29 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return null;
 	}
 
+	@Override
+	public Employee getEmployeeByFirstName(String firstName) {
+		// call employee dao method to find employee using firstName
+		Employee emp = empDao.findByFirstName(firstName);
+		
+		// return response
+		return emp;
+	}
+
+	@Override
+	public Employee getEmployeeByContactNo(String contactNo) {
+		// Call employee dao method to find employee based on contact no
+		Employee emp = empDao.findByContactNo(contactNo);
+		// return response
+		return emp;
+	}
+
+	@Override
+	public Employee getEmployeeByLastName(String lastName) {
+		// call dao to find emp based on lastname
+		Employee emp = empDao.getEmployeeByLastName(lastName);
+		// return response
+		return emp;
+	}
+
 }
