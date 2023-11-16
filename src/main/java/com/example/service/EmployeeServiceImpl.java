@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.dao.EmployeeDao;
 import com.example.entity.Employee;
+import com.example.exception.EmployeeNotFoundException;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -31,8 +32,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return e;
 	}
 
+	// Step 3: throw Employee not found exception, if employee not found
 	@Override
-	public Employee getEmployeeById(int id) {
+	public Employee getEmployeeById(int id) throws EmployeeNotFoundException {
 		// call dao/repository method to get employee by id
 		Optional<Employee> opt = empDao.findById(id);
 
@@ -41,7 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			return opt.get();
 		}
 
-		return null;
+		throw new EmployeeNotFoundException("Employee not found with id: "+id);
 	}
 
 	@Override

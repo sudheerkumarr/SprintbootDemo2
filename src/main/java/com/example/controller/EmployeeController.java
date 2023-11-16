@@ -3,6 +3,8 @@ package com.example.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Employee;
+import com.example.exception.EmployeeNotFoundException;
 import com.example.service.EmployeeService;
 
 
@@ -24,18 +27,19 @@ public class EmployeeController {
 	
 	// Get all employee details
 	@GetMapping("/employee/all")
-	List<Employee> getAllEmployees() {
-		return empService.getAllEmployees();
+	ResponseEntity<List<Employee>> getAllEmployees() {
+		List<Employee> empList= empService.getAllEmployees();
+		return new ResponseEntity<>(empList, HttpStatus.OK); // 200 OK
 	}
 	
 	// Get employee by id
 	@GetMapping("/employee/findById/{id}")
-	Employee getEmployeeById(@PathVariable("id") int id) {
+	ResponseEntity<Employee> getEmployeeById(@PathVariable("id") int id) throws EmployeeNotFoundException {
 		// Call service method to get emp based on id
 		Employee emp = empService.getEmployeeById(id);
 		
 		// return emp
-		return emp;
+		return new ResponseEntity<>(emp, HttpStatus.OK); // 200 OK
 	}
 	
 	//Get employee by name
