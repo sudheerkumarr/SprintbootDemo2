@@ -24,4 +24,16 @@ public class EmployeeExceptionHandler {
 		
 		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);  //404 Not found
 	}
+	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ErrorResponse> handleException(Exception exception) {
+		ErrorResponse error = new ErrorResponse();
+		
+		error.setStatus(HttpStatus.BAD_REQUEST.value());
+		error.setMessage(exception.getMessage());
+		//error.setTimeStamp(System.currentTimeMillis());
+		error.setTimeStamp(LocalDateTime.now());
+		
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);  //400 Bad Request
+	}
 }

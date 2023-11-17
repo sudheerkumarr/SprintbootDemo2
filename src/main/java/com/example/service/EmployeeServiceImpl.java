@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.dao.EmployeeDao;
+import com.example.dto.EmployeeDto;
+import com.example.dto.EmployeeRespDto;
 import com.example.entity.Employee;
+import com.example.entity.Login;
 import com.example.exception.EmployeeNotFoundException;
 
 @Service
@@ -20,9 +23,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public List<Employee> getAllEmployees() {
 		// Get all employee from db
 		List<Employee> lst = empDao.findAll();
+
 		return lst;
 	}
 
+	public List<EmployeeRespDto> getAllEmps() {
+		// create list with EmployeeRespDto type
+		// for - read one employee at a time
+		// convert emp to empRespDto type
+		// add empRespDto to empRespDtoList
+		// return empRespDtoList
+		return null;
+	}
+
+
+	
 	@Override
 	public Employee addEmployee(Employee emp) {
 		// Call dao/repository method to add employee in db
@@ -43,7 +58,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			return opt.get();
 		}
 
-		throw new EmployeeNotFoundException("Employee not found with id: "+id);
+		throw new EmployeeNotFoundException("Employee not found with id: " + id);
 	}
 
 	@Override
@@ -83,18 +98,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 		if (opt.isPresent()) {
 			// get employee from optional using get()
 			Employee emp = opt.get();
-			
+
 			// update contact no.
 			emp.setContactNo(newContactNo);
-			
+
 			// save updated emp in the db.
 			Employee e = empDao.save(emp);
-			
+
 			// return updated employee
 			return e;
 
 		}
-		
+
 		return null;
 	}
 
@@ -102,7 +117,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public Employee getEmployeeByFirstName(String firstName) {
 		// call employee dao method to find employee using firstName
 		Employee emp = empDao.findByFirstName(firstName);
-		
+
 		// return response
 		return emp;
 	}
@@ -121,6 +136,50 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Employee emp = empDao.getEmployeeByLastName(lastName);
 		// return response
 		return emp;
+	}
+
+	@Override
+	public EmployeeRespDto addEmployeeDto(EmployeeDto empDto) {
+		// Converting EmployeeDto to Employee obj
+		System.out.println("EmpDto: " + empDto);
+		// Create employee object
+		Employee emp = new Employee();
+		System.out.println("Emp: " + emp);
+
+		// read details from dto object and update emp object
+		emp.setFirstName(empDto.getFirstName());
+		emp.setLastName(empDto.getLastName());
+		emp.setContactNo(empDto.getContactNo());
+
+		// Create Login obj
+		Login login = new Login();
+		System.out.println("Login: " + login);
+
+		login.setEmail(empDto.getEmail());
+		login.setPassword(empDto.getPassword());
+		login.setRole("Employee");
+		login.setLogin(false);
+
+		emp.setLogin(login);
+
+		System.out.println("Emp: " + emp);
+
+		// Call dao method to store emp in db
+		Employee newEmp = empDao.save(emp);
+
+		// Convert Employee to EmployeeRespDto
+
+		// Create EmployeeResponseDto object
+		EmployeeRespDto empRespDto = new EmployeeRespDto();
+
+		// update responseDto details with emp details received from db
+
+		empRespDto.setFirstName(newEmp.getFirstName());
+		empRespDto.setLastName(newEmp.getLastName());
+		empRespDto.setEmail(newEmp.getLogin().getEmail());
+		empRespDto.setContactNo(newEmp.getContactNo());
+
+		return empRespDto;
 	}
 
 }
