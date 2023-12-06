@@ -25,6 +25,18 @@ public class EmployeeExceptionHandler {
 		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);  //404 Not found
 	}
 	
+	@ExceptionHandler(InvalidCredentialsException.class)
+	public ResponseEntity<ErrorResponse> handleException(InvalidCredentialsException exception) {
+		// Create Error response Obj
+		ErrorResponse error = new ErrorResponse();
+		
+		error.setStatus(HttpStatus.NOT_FOUND.value()); // 404 not found
+		error.setMessage(exception.getMessage()); //get message from exception
+		error.setTimeStamp(LocalDateTime.now()); // system time
+		
+		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);  //404 Not found
+	}
+	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorResponse> handleException(Exception exception) {
 		ErrorResponse error = new ErrorResponse();
