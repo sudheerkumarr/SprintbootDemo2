@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Component
 public class EmployeeDto {
-
+	private int empId;
 	private String firstName;
 	private String lastName;
 	private String email;

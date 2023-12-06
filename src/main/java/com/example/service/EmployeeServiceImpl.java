@@ -182,4 +182,26 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return empRespDto;
 	}
 
+	@Override
+	public Employee updateEmployeeDto(EmployeeDto empDto) {
+		// Convert EmployeeDto to Employee
+		Employee emp = new Employee();
+		emp.setEmpId(empDto.getEmpId());
+		emp.setFirstName(empDto.getFirstName());
+		emp.setLastName(empDto.getLastName());
+		emp.setContactNo(empDto.getContactNo());
+		
+		Login login = new Login();
+		login.setEmail(empDto.getEmail());
+		login.setPassword(empDto.getPassword());
+		
+		emp.setLogin(login);
+		
+		// save emp obj in db
+		Employee updatedEmp = empDao.save(emp);
+		
+		// return response
+		return updatedEmp;
+	}
+
 }

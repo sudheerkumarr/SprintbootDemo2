@@ -17,6 +17,7 @@ public interface EmployeeService {
 	EmployeeRespDto addEmployeeDto(EmployeeDto empDto);
 	Employee getEmployeeById(int id) throws EmployeeNotFoundException;
 	Employee updateEmployee(Employee emp);
+	Employee updateEmployeeDto(EmployeeDto empDto);
 	void deleteEmployeeById(int id);
 	Employee updateContactNo(int id, String newContactNo);
 	Employee getEmployeeByFirstName(String firstName);
