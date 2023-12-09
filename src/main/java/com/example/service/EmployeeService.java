@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.dto.EmployeeDto;
 import com.example.dto.EmployeeRespDto;
+import com.example.entity.Address;
 import com.example.entity.Employee;
 import com.example.exception.EmployeeNotFoundException;
 
@@ -23,5 +24,7 @@ public interface EmployeeService {
 	Employee getEmployeeByFirstName(String firstName);
 	Employee getEmployeeByContactNo(@PathVariable("cNo") String contactNo);
 	Employee getEmployeeByLastName(@RequestBody String lastName);
-	
+	String findEmailByEmpName(@PathVariable String firstName);
+	Employee addEmpAddr(int empId, Address address) throws EmployeeNotFoundException;
+	Employee addEmpSkill(int empId, int skillId);
 }

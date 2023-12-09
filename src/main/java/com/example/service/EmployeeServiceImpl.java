@@ -7,10 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.dao.EmployeeDao;
+import com.example.dao.LoginDao;
+import com.example.dao.SkillDao;
 import com.example.dto.EmployeeDto;
 import com.example.dto.EmployeeRespDto;
+import com.example.entity.Address;
 import com.example.entity.Employee;
 import com.example.entity.Login;
+import com.example.entity.Skill;
 import com.example.exception.EmployeeNotFoundException;
 
 @Service
@@ -18,6 +22,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Autowired
 	EmployeeDao empDao;
+	
+	@Autowired
+	LoginDao loginDao;
+	
+	@Autowired
+	SkillDao skillDao;
 
 	@Override
 	public List<Employee> getAllEmployees() {
@@ -202,6 +212,60 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		// return response
 		return updatedEmp;
+	}
+
+	// Find email based on firstName
+	@Override
+	public String findEmailByEmpName(String firstName) {
+		String email = empDao.findEmailByfirstName(firstName);
+		return email;
+	}
+
+	@Override
+	public Employee addEmpAddr(int empId, Address address) throws EmployeeNotFoundException {
+		// find emp based on id;
+		Optional<Employee> opt= empDao.findById(empId);
+		
+		if(opt.isPresent()) {
+			// fetch existing address details
+			
+			Employee emp = opt.get();
+			
+			// add new address to emp address list
+			List<Address> addrList = emp.getAddress(); // 1
+			addrList.add(address); // 1, 2
+			
+			emp.setAddress(addrList);
+			
+			// save emp in db and return employee
+			return empDao.save(emp);
+			
+			
+		} else {
+			throw new EmployeeNotFoundException("Employee not found with id: "+ empId);
+		}
+		
+		
+	}
+
+	@Override
+	public Employee addEmpSkill(int empId, int skillId) {
+		// fetch emp details using empId
+	    Employee emp  =	empDao.findById(empId).get();
+		
+	    // fetch skill details using skillId
+		Skill skill = skillDao.findById(skillId).get();
+		
+		// add skill to emp
+		List<Skill> skillList = emp.getSkillList(); // 2 skill
+		skillList.add(skill); // 3 skill
+		
+		emp.setSkillList(skillList);
+		
+		// save emp to db & return upated emp
+		return empDao.save(emp);
+		
+	
 	}
 
 }

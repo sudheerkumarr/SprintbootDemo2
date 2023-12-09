@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.EmployeeDto;
 import com.example.dto.EmployeeRespDto;
+import com.example.entity.Address;
 import com.example.entity.Employee;
 import com.example.exception.EmployeeNotFoundException;
 import com.example.service.EmployeeService;
@@ -141,4 +142,21 @@ public class EmployeeController {
 		return e;
 	}
 
+	@GetMapping("/employee/findEmailBy/{firstName}")
+	String findEmailByEmpName(@PathVariable String firstName) {
+		String email = empService.findEmailByEmpName(firstName);
+		return email;
+	}
+	
+	// add employee address
+	@PostMapping("/employee/{empId}/add/address")
+	Employee addEmpAddr(@PathVariable int empId, @RequestBody Address address) throws EmployeeNotFoundException {
+		return empService.addEmpAddr(empId, address);
+	}
+	
+	// map/add employee skills
+	@GetMapping("/employee/map/{empId}/skill/{skillId}")
+	Employee addEmpSkill(@PathVariable int empId, @PathVariable int skillId) {
+		return empService.addEmpSkill(empId, skillId);
+	}
 }
